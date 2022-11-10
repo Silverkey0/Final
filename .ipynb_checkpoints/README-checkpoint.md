@@ -1,14 +1,14 @@
 # Final Project Outline
 ## Title
-Differential Gene Expression in TCGA within Stage ? ? comparing ? and ? using DeSEQ2.
+Differential Gene Expression in TCGA-BRCA within Stage II breast ductal and lobular neoplasms comparing middle-aged and elderly using DeSEQ2.
 ## Author
 Henry Xu
 ## Overview of Project
-I will identify differentially expressed genes between ?. This analysis will utilize the package DeSEQ2 and follow the specific vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html. For this analysis, I'll use the TCGA cohort and have identified ? ht-seq counts files for tumors that fit within my cohort with ? and ?. Within the analysis, I will control for race and ethnicity.
+I will identify differentially expressed genes for breast ductal and lobular neoplasms between middle-aged and elderly. This analysis will utilize the package DeSEQ2 and follow the specific vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html. For this analysis, I'll use the TCGA cohort and have identified 284 STAR-Counts files for tumors that fit within my cohort with 77 middle-aged (20-49) and 207 elderly (50-90). Within the analysis, I will control for race (white), gender (female), ethnicity (not hispanic or latino).
 
 Vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 ## Data
-I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are ? tumor samples, and ? are defined by me as ? and ? are identified as ?. The specific files are available are here [redacted].
+I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are 284 tumor samples, and 77 are defined by me as middle-aged, and 207 are identified as elderly. The specific files are available are here .
 ## Milestone 1
 **Due Date**: Thursday November 22th
 **Data fully loaded into vignette through htseq steps.** I will complete an entire first draft of analysis analyzed through the vignette.
