@@ -8,7 +8,8 @@ I will identify differentially expressed genes for pancrease ductal and lobular 
 
 Vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 ## Data
-I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are 35 tumor samples, and 25 are defined by me as drinkers, and 10 are identified as non-drinkers. The specific files are available are here https://github.com/Silverkey0/Final/tree/main/pancrease_clinical.cases
+I will use the data from https://portal.gdc.cancer.gov/repository. Examining clinical data, there are 35 tumor samples, and 25 are defined by me as drinkers, and 10 are identified as non-drinkers. The specific files are available are here 
+https://github.com/Silverkey0/Final/tree/main/pancrease_sample
 ## Milestone 1
 **Due Date**: Thursday November 22th
 **Data fully loaded into vignette through DeSEQ2 steps.** I will complete an entire first draft of analysis analyzed through the vignette.
