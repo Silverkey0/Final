@@ -61,5 +61,3 @@ paste gene_id.txt 00bb.txt 0c7c.txt 1fbb.txt 002d.txt 47b1.txt 5d3a.txt 7d5d.txt
 ```
 
 ### Check packages in your Rstudio library ###
-
-![](1.png)
