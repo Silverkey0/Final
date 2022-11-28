@@ -257,4 +257,4 @@ resultLFC
 ```{r}
 plotMA(result_table, ylim=c(-2,2))
 ```
-![alt text](https://https://github.com/Silverkey0/Final/tree/main/Vigentte/result_table.png?raw=true)
+![png](result_table.png)
