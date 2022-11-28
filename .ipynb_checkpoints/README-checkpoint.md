@@ -24,7 +24,9 @@ A complete repository with clear documentation and description of your analysis 
 
 Extract the column #4 which is unstranded counts of the sample
 
+```{r}
 awk '{print $4}' /Users/henry/Documents/GitHub/Final/Gene_Counts/feec3523-951e-4541-8664-2a71adfdecb5.rna_seq.augmented_star_gene_counts.tsv > /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged/feec.txt
+```
 
 Remove the first line of the file without printing [Eun]
 
@@ -49,3 +51,5 @@ awk '!/^N_*/' gene_id.txt > gene_id.tmp && mv gene_id.tmp gene_id.txt
 Merged counts
 
 paste gene_id.txt 00bb.txt 0c7c.txt 1fbb.txt 002d.txt 47b1.txt 5d3a.txt 7d5d.txt 7f20.txt 7fc4.txt 9ed8.txt 13db.txt 033f.txt 65ac.txt 67be.txt 78b8.txt 90fe.txt 92aa.txt 875e.txt 1536.txt 3330.txt 6633.txt 6813.txt 6855.txt 9077.txt a5f5.txt a66b.txt afa6.txt c9b3.txt d5d8.txt d92e.txt e1f5.txt ea66.txt f98d.txt f658.txt feec.txt > Merged_Gene_Counts.txt
+
+### Check packages in your Rstudio library ###
