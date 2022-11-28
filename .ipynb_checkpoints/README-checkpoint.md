@@ -257,4 +257,4 @@ resultLFC
 ```{r}
 plotMA(result_table, ylim=c(-2,2))
 ```
-![png](/Users/henry/Documents/GitHub/Final/Vigentte/result_table.png)
+![result_table](/Users/henry/Documents/GitHub/Final/Vigentte/result_table.png)
