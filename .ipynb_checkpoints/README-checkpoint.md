@@ -255,6 +255,255 @@ resultLFC
 ### Exploring and Exporting Results ###
 #### MA-plot ####
 ```{r}
+# Normal data
 plotMA(result_table, ylim=c(-2,2))
 ```
-![Result_table](https://github.com/Silverkey0/Final/blob/main/Vigentte/result_table.png)
+![result_table](https://github.com/Silverkey0/Final/blob/main/Vigentte/result_table.png)
+
+```{r}
+# Shrink data
+plotMA(resultLFC, ylim=c(-2,2))
+```
+
+![resultLFC](https://github.com/Silverkey0/Final/blob/main/Vigentte/resultLFC.png)
+
+#### Set p-value and Print the Summary ####
+```{r}
+result05 <- results(DES_dataset, alpha = 0.05)
+summary(result05)
+```
+
+```{r}
+## out of 38284 with nonzero total read count
+## adjusted p-value < 0.05
+## LFC > 0 (up)       : 103, 0.27%
+## LFC < 0 (down)     : 30, 0.078%
+## outliers [1]       : 0, 0%
+## low counts [2]     : 14115, 37%
+## (mean count < 5)
+## [1] see 'cooksCutoff' argument of ?results
+## [2] see 'independentFiltering' argument of ?results
+```
+
+```{r}
+sum(result05$padj < 0.05, na.rm = TRUE)
+```
+
+```{r}
+## [1] 133
+```
+
+#### Use “plotCounts" to Make a Plot for the Read Counts of Single Gene Across the Groups ####
+```{r}
+plotCounts(DES_dataset, gene = which.min(result05$padj), intgroup = "alcohol_history")
+```
+
+![gene.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/gen.png)
+
+#### Extracting transformed values ####
+```{r}
+vsd <- vst(DES_dataset, blind = FALSE)
+rld <- rlog(DES_dataset, blind = FALSE)
+```
+
+```{r}
+## rlog() may take a few minutes with 30 or more samples,
+## vst() is a much faster transformation
+```
+
+```{r}
+head(assay(vsd), 3)
+```
+
+```{r}
+##                    X0944ce65.a89a.4916.b90a.f674b334281e
+## ENSG00000000003.15                              11.11784
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              10.69853
+##                    X953359da.e535.48e6.97dc.1b4ccad6a671
+## ENSG00000000003.15                             10.469092
+## ENSG00000000005.6                               3.523737
+## ENSG00000000419.13                              9.854301
+##                    X45e48080.0b27.45f4.8149.1ae7e36c6933
+## ENSG00000000003.15                              11.42111
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              10.19252
+##                    X6a0a280d.4a30.4071.afe7.de6b82a6e34c
+## ENSG00000000003.15                              11.08994
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              11.33106
+##                    ff8dac97.42ff.4f48.81c4.50315ad8de58
+## ENSG00000000003.15                             10.98319
+## ENSG00000000005.6                               2.50032
+## ENSG00000000419.13                             10.43812
+##                    X74aa6675.28b7.46dc.9015.f07a07c7b018
+## ENSG00000000003.15                             10.119690
+## ENSG00000000005.6                               3.313616
+## ENSG00000000419.13                             10.241305
+##                    f2313562.c894.486d.a9b6.ed362e12a32a
+## ENSG00000000003.15                            11.027259
+## ENSG00000000005.6                              6.435199
+## ENSG00000000419.13                            10.788489
+##                    a643d0b8.aa50.481c.9f12.f2e634d61d90
+## ENSG00000000003.15                            10.689464
+## ENSG00000000005.6                              4.111973
+## ENSG00000000419.13                            10.354938
+##                    f73dfd7f.e054.46ff.9485.e8d05afe2da6
+## ENSG00000000003.15                            11.583489
+## ENSG00000000005.6                              3.033212
+## ENSG00000000419.13                            10.947620
+##                    X9d5c5303.550f.454f.8fd4.8abcdd311215
+## ENSG00000000003.15                             11.276324
+## ENSG00000000005.6                               3.803556
+## ENSG00000000419.13                             10.237839
+##                    X1422bc35.4597.4e76.aa75.8e79613e67d5
+## ENSG00000000003.15                             10.952656
+## ENSG00000000005.6                               3.578367
+## ENSG00000000419.13                             11.187756
+##                   ecdd0e44.0add.4a08.a3f8.ab2f51df7afd
+## ENSG00000000003.15                             10.15262
+## ENSG00000000005.6                               2.50032
+## ENSG00000000419.13                             10.92123
+##                    X27286a38.1035.4a22.9ebc.874df8c49026
+## ENSG00000000003.15                             10.165266
+## ENSG00000000005.6                               3.566946
+## ENSG00000000419.13                             10.374345
+##                    X396ff766.a383.4f42.bce3.f2f32b7f1151
+## ENSG00000000003.15                             10.828314
+## ENSG00000000005.6                               4.420741
+## ENSG00000000419.13                             10.502134
+##                    afe89625.b355.454d.8c0b.b4161edd69f8
+## ENSG00000000003.15                            10.316927
+## ENSG00000000005.6                              3.765765
+## ENSG00000000419.13                            10.156109
+##                    X98f1d0eb.0977.4f53.a3b1.e6875a34c27b
+## ENSG00000000003.15                              10.47452
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                               8.81545
+##                    X5dbb4642.6636.4d67.9e73.25c7312aec44
+## ENSG00000000003.15                              11.63586
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              10.48842
+##                    X56a1b8ff.a71c.4e5f.9c3c.d8162ff896aa
+## ENSG00000000003.15                              11.17182
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              11.56223
+##                    a53c919a.4e08.46f1.af3f.30b16b597c33
+## ENSG00000000003.15                             10.18285
+## ENSG00000000005.6                               2.50032
+## ENSG00000000419.13                             10.38722
+##                    d1e0f479.77dd.42cd.89cb.c1eeac60c10a
+## ENSG00000000003.15                             11.97779
+## ENSG00000000005.6                               2.50032
+## ENSG00000000419.13                             11.47426
+##                    d14154a5.9c8a.4c55.8c2d.64f3cad7b7d5
+## ENSG00000000003.15                             9.900287
+## ENSG00000000005.6                              3.123225
+## ENSG00000000419.13                            10.517233
+##                    X620e0648.ec20.4a12.a6cb.5546fe829c77
+## ENSG00000000003.15                              11.47376
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              11.01836
+##                    cfda26b9.d417.425c.9a72.fa76ca4b296c
+## ENSG00000000003.15                            10.895312
+## ENSG00000000005.6                              4.080428
+## ENSG00000000419.13                            10.115151
+##                    X81b6b844.d760.4146.9b01.1c4b2596eb77
+## ENSG00000000003.15                              10.31953
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              10.69468
+##                    X65e5bf5f.f22a.4ec2.8839.aeda37212b98
+## ENSG00000000003.15                             10.208785
+## ENSG00000000005.6                               5.041704
+## ENSG00000000419.13                             10.190304
+                   cd9dc5c5.1161.43ea.a617.1356a3b23e16
+## ENSG00000000003.15                            11.681712
+## ENSG00000000005.6                              3.070687
+## ENSG00000000419.13                            10.514438
+##                    f91eb33d.76f0.418c.9962.11a5b31ca1dc
+## ENSG00000000003.15                            10.475401
+## ENSG00000000005.6                              3.344849
+## ENSG00000000419.13                            10.504750
+##                    b84b58c7.95b8.4162.8e61.414f8fe422c6
+## ENSG00000000003.15                            10.504454
+## ENSG00000000005.6                              3.364262
+## ENSG00000000419.13                            10.460182
+##                    X4a60e87e.6bc1.4ae0.9ccb.4cdc3e99c608
+## ENSG00000000003.15                             10.540097
+## ENSG00000000005.6                               3.546611
+## ENSG00000000419.13                             10.443562
+##                    c70621cc.c8e1.441d.93ec.bd6922cc7f61
+## ENSG00000000003.15                            10.251171
+## ENSG00000000005.6                              3.422972
+## ENSG00000000419.13                            10.273668
+##                   b84b58c7.95b8.4162.8e61.414f8fe422c6.1
+## ENSG00000000003.15                              10.712260
+## ENSG00000000005.6                                8.481704
+## ENSG00000000419.13                              10.339703
+                   a308a5ee.8ea1.47ee.823d.14736d74a925
+## ENSG00000000003.15                             9.663322
+## ENSG00000000005.6                              6.792323
+## ENSG00000000419.13                            10.721401
+##                    X6788e0e5.b67f.4fe6.aabb.6d0430ae2d06
+## ENSG00000000003.15                             10.079888
+## ENSG00000000005.6                               3.988713
+## ENSG00000000419.13                             10.076598
+##                    X0a3c8161.4186.4c95.8288.9928d6db0355
+## ENSG00000000003.15                             10.044919
+## ENSG00000000005.6                               3.556341
+## ENSG00000000419.13                             10.115659
+##                    X712c2f78.c736.42ce.b689.a954c5290987
+## ENSG00000000003.15                              11.52887
+## ENSG00000000005.6                                2.50032
+## ENSG00000000419.13                              10.59026
+```
+
+#### Effects of Transformations on the Variance ####
+
+```{r}
+ntd <- normTransform(DES_dataset)
+meanSdPlot(assay(ntd))
+```
+
+![ntd.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/ntd.png)
+
+```{r}
+meanSdPlot(assay(vsd))
+```
+
+![vsd.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/vsd.png)
+
+```{r}
+meanSdPlot(assay(rld))
+```
+
+![rld.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/rld.png)
+
+#### Data Quality Assessment by Sample Clustering and Visualization ####
+
+```{r}
+select <- order(rowMeans(counts(DES_dataset,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(DES_dataset)[,c("case_id", "alcohol_history")])
+row.names(df) <- df$case_id
+df <- df[-c(1)]
+```
+
+#### Heatmap of the Count Matrix ####
+```{r}
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_cols=FALSE, annotation_col=df)
+```
+
+```{r}
+pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_cols=FALSE, annotation_col=df)
+```
+
+```{r}
+pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_cols=FALSE,annotation_col=df)
+```
+
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+DistMatrix <- as.matrix(sampleDists)
+pheatmap(DistMatrix)
+```
