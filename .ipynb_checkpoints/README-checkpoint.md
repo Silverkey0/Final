@@ -415,7 +415,7 @@ pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_c
 pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_cols=FALSE,annotation_col=df)
 ```
 
-![Heatmap(rld).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/rld.png)
+![Heatmap(rld).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/Heatmap(rld).png)
 
 Sample-to-Sample distances
 ```{r}
