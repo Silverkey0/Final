@@ -417,6 +417,7 @@ pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_c
 
 ![Heatmap(rld).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/rld.png)
 
+Sample-to-Sample distances
 ```{r}
 sampleDists <- dist(t(assay(vsd)))
 DistMatrix <- as.matrix(sampleDists)
