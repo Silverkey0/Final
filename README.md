@@ -12,13 +12,13 @@ I will use the data from https://portal.gdc.cancer.gov/repository. Examining cli
 https://github.com/Silverkey0/Final/tree/main/pancrease_sample
 ## Milestone 1
 **Due Date**: Thursday November 22th
-**Data fully loaded into vignette through DeSEQ2 steps.** I will complete an entire first draft of analysis analyzed through the vignette.
+**Data fully loaded into vignette through DeSEQ2 steps.** I will complete the first draft of the processed data.
 ## Milestone 2
 **Due Date**: Thursday November 29th
-**An initial completion of vignette.** I will do further analysis through the vignette.Data loaded into vignette (through STAR), for seeking feedback. Not all sections in the writing will be completed, but will be final project.
+**An initial completion of vignette.** I will do further analysis through the processed data.load data into vignette (through STAR), for seeking feedback. Not all sections in the writing will be completed, but will be final project.
 ## Deliverable
 **Due Date**: December 3rd
-A complete repository with clear documentation and description of your analysis and results.
+A complete repository with clear formatted vigneette and the data about the relationship between pancrease and drinking alcohol.
 ## Method
 **Regarding the method, I would like to give special thanks to Eun Sung. He helped me to solve many problems. I use some of his codes in my method, and I'll cite them.**
 
