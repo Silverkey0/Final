@@ -4,19 +4,19 @@ output: html_notebook
 ---
 
 ```{python}
-awk '{print $4}' /Users/henry/Documents/GitHub/Final/Gene_Counts/feec3523-951e-4541-8664-2a71adfdecb5.rna_seq.augmented_star_gene_counts.tsv > /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged/feec.txt
+awk '{print $2 , $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample.txt
 ```
 
 ```{bash}
-paste gene_id.txt 00bb.txt 0c7c.txt 1fbb.txt 002d.txt 47b1.txt 5d3a.txt 7d5d.txt 7f20.txt 7fc4.txt 9ed8.txt 13db.txt 033f.txt 65ac.txt 67be.txt 78b8.txt 90fe.txt 92aa.txt 875e.txt 1536.txt 3330.txt 6633.txt 6813.txt 6855.txt 9077.txt a5f5.txt a66b.txt afa6.txt c9b3.txt d5d8.txt d92e.txt e1f5.txt ea66.txt f98d.txt f658.txt feec.txt > Merged_Gene_Counts.txt
+paste gene_id.txt TCGA-FB-AAQ0.txt TCGA-FB-AAPY.txt TCGA-3A-A9IU.txt TCGA-IB-7893.txt TCGA-HZ-7918.txt TCGA-FB-AAPQ.txt TCGA-IB-A6UF.txt TCGA-IB-7654.txt TCGA-F2-A8YN.txt TCGA-IB-7886.txt TCGA-IB-7646.txt TCGA-HZ-A49I.txt TCGA-3A-A9J0.txt TCGA-OE-A75W.txt TCGA-IB-A7LX.txt TCGA-XD-AAUL.txt TCGA-FB-AAPP.txt TCGA-FB-AAPZ.txt TCGA-IB-AAUP.txt TCGA-FB-AAQ1.txt TCGA-3E-AAAY.txt TCGA-IB-AAUR.txt TCGA-IB-A7M4.txt TCGA-S4-A8RM.txt TCGA-HZ-7925.txt TCGA-IB-A6UG.txt TCGA-IB-AAUM.txt TCGA-3A-A9I9.txt TCGA-IB-AAUU.txt TCGA-RB-AA9M.txt TCGA-YB-A89D.txt TCGA-IB-7647.txt TCGA-IB-AAUQ.txt TCGA-US-A77G.txt TCGA-HZ-A8P0.txt > Merged_Gene_Counts.txt
 ```
 
 ```{r}
-awk '{print $1 "," $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.txt
+awk '{print $2 "," $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample.tsv
 ```
 
 ```{r}
-awk '{print $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample2.tsv
+awk '{print $2}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample1.tsv
 ```
 
 ```{r}
@@ -32,7 +32,7 @@ count_matrix <- count_matrix[-c(1)]
 # Read in the sample sheet
 sampletable <- read_tsv('/Users/henry/Documents/GitHub/Final/pancrease_sample/sample.tsv')
 
-row.names(sampletable) <- sampletable$case_id
+row.names(sampletable) <- sampletable$case_submitter_id
 
 sampletable$alcohol_history <- as.factor(sampletable$alcohol_history)
 ```
@@ -135,8 +135,8 @@ meanSdPlot(assay(rld))
 ```{r}
 select <- order(rowMeans(counts(DES_dataset,normalized=TRUE)),
                 decreasing=TRUE)[1:20]
-df <- as.data.frame(colData(DES_dataset)[,c("case_id", "alcohol_history")])
-row.names(df) <- df$case_id
+df <- as.data.frame(colData(DES_dataset)[,c("case_submitter_id", "alcohol_history")])
+df$case_submitter_id <- as.factor(df$case_submitter_id)
 df <- df[-c(1)]
 ```
 
@@ -150,5 +150,15 @@ pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_c
 
 ```{r}
 pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_cols=FALSE,annotation_col=df)
+```
+
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+DistMatrix <- as.matrix(sampleDists)
+pheatmap(DistMatrix)
+```
+
+```{r}
+plotPCA(vsd, intgroup="alcohol_history")
 ```
 
