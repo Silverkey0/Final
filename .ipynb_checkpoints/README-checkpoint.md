@@ -470,4 +470,4 @@ pheatmap(DistMatrix)
 plotPCA(vsd, intgroup="alcohol_history")
 ```
 
-![principal_analysis.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/principal_analysis.png.png)
+![principal_analysis.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/principal_analysis.png)
