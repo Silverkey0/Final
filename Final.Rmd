@@ -3,38 +3,84 @@ title: "R Notebook"
 output: html_notebook
 ---
 
+```{r}
+awk '{print $1}' /Users/henry/Documents/GitHub/Final/Gene_Counts_Female/CGA-FB-AAQ3.tsv > /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged_Female/gene_id.txt
+```
+
 ```{python}
-awk '{print $2 , $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample.txt
+awk '{print $2 , $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/sample.txt
+```
+
+```{r}
+awk '{print $4}' /Users/henry/Documents/GitHub/Final/Gene_Counts_Female/TCGA-FB-AAQ3.tsv > /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged_Female/TCGA-FB-AAQ3.txt
 ```
 
 ```{bash}
 paste gene_id.txt TCGA-FB-AAQ0.txt TCGA-FB-AAPY.txt TCGA-3A-A9IU.txt TCGA-IB-7893.txt TCGA-HZ-7918.txt TCGA-FB-AAPQ.txt TCGA-IB-A6UF.txt TCGA-IB-7654.txt TCGA-F2-A8YN.txt TCGA-IB-7886.txt TCGA-IB-7646.txt TCGA-HZ-A49I.txt TCGA-3A-A9J0.txt TCGA-OE-A75W.txt TCGA-IB-A7LX.txt TCGA-XD-AAUL.txt TCGA-FB-AAPP.txt TCGA-FB-AAPZ.txt TCGA-IB-AAUP.txt TCGA-FB-AAQ1.txt TCGA-3E-AAAY.txt TCGA-IB-AAUR.txt TCGA-IB-A7M4.txt TCGA-S4-A8RM.txt TCGA-HZ-7925.txt TCGA-IB-A6UG.txt TCGA-IB-AAUM.txt TCGA-3A-A9I9.txt TCGA-IB-AAUU.txt TCGA-RB-AA9M.txt TCGA-YB-A89D.txt TCGA-IB-7647.txt TCGA-IB-AAUQ.txt TCGA-US-A77G.txt TCGA-HZ-A8P0.txt > Merged_Gene_Counts.txt
 ```
 
-```{r}
-awk '{print $2 "," $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample.tsv
+```{bash}
+paste TCGA-FB-AAQ0.txt TCGA-FB-AAPY.txt TCGA-3A-A9IU.txt TCGA-IB-7893.txt TCGA-HZ-7918.txt TCGA-FB-AAPQ.txt TCGA-IB-A6UF.txt TCGA-IB-7654.txt TCGA-F2-A8YN.txt TCGA-IB-7886.txt TCGA-IB-7646.txt TCGA-HZ-A49I.txt TCGA-3A-A9J0.txt TCGA-OE-A75W.txt TCGA-IB-A7LX.txt TCGA-XD-AAUL.txt TCGA-FB-AAPP.txt TCGA-FB-AAPZ.txt TCGA-IB-AAUP.txt TCGA-FB-AAQ1.txt TCGA-3E-AAAY.txt TCGA-IB-AAUR.txt TCGA-IB-A7M4.txt TCGA-S4-A8RM.txt TCGA-HZ-7925.txt TCGA-IB-A6UG.txt TCGA-IB-AAUM.txt TCGA-3A-A9I9.txt TCGA-IB-AAUU.txt TCGA-RB-AA9M.txt TCGA-YB-A89D.txt TCGA-IB-7647.txt TCGA-IB-AAUQ.txt TCGA-US-A77G.txt TCGA-HZ-A8P0.txt > Merged_Gene_Counts_1.txt
+```
+
+
+```{bash}
+paste gene_id.txt TCGA-IB-A5ST.txt TCGA-IB-7889.txt TCGA-FB-AAQ3.txt TCGA-IB-AAUO.txt TCGA-FB-AAPS.txt TCGA-HZ-7919.txt TCGA-IB-7885.txt TCGA-3A-A9IC.txt TCGA-IB-7651.txt TCGA-XD-AAUH.txt TCGA-XD-AAUI.txt TCGA-HZ-A77O.txt TCGA-US-A779.txt TCGA-LB-A9Q5.txt TCGA-IB-7887.txt TCGA-HZ-8317.txt TCGA-HZ-7922.txt TCGA-FB-AAQ2.txt TCGA-FB-A78T.txt TCGA-IB-A5SS.txt TCGA-HZ-A49H.txt TCGA-YY-A8LH.txt TCGA-S4-A8RO.txt TCGA-IB-7891.txt TCGA-3A-A9IB.txt > Merged_Gene_Counts.txt
+```
+
+```{bash}
+paste /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged_Female/Merged_Gene_Counts.txt /Users/henry/Documents/GitHub/Final/Gene_Counts_Merged_Male/Merged_Gene_Counts_1.txt > /Users/henry/Documents/GitHub/Final/DES_dataset/Merged_Gene_Counts.txt
+```
+
+```{bash}
+cd /Users/henry/Documents/GitHub/Final/DES_dataset
+cat *tsv > sample.tsv
 ```
 
 ```{r}
-awk '{print $2}' /Users/henry/Documents/GitHub/Final/pancrease_sample/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample/sample1.tsv
+awk '{print $2}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/sample1.tsv
+```
+
+```{bash}
+awk '{print $15}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/clinical.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/sample3.tsv
+```
+
+```{bash}
+# Change column name of a file
+sed -e '1s/race/gender/' -e '1s/race/gender/' sample3.tsv > sample4.tsv
+```
+
+```{bash}
+# Delete lines of a file
+sed '37,71d' sample4.tsv > sample5.tsv
+```
+
+```{r}
+paste sample1.tsv sample5.tsv sample2.tsv > sample.tsv
+```
+
+```{bash}
+tail -n +2 sample.tsv > sample.tmp && mv sample.tmp sample_male.tsv
 ```
 
 ```{r}
 setwd('/Users/henry/Documents/GitHub/Final')
 
 # Read in the matrix
-count_matrix <- read.delim("/Users/henry/Documents/GitHub/Final/Gene_Counts_Merged/Merged_Gene_Counts.txt", header=T, sep="\t")
+count_matrix <- read.delim("/Users/henry/Documents/GitHub/Final/DES_dataset/Merged_Gene_Counts.txt", header=T, sep="\t")
 
 # Change column #1 into row name and delete the column #1 after that
 row.names(count_matrix) <- count_matrix$gene_id
 count_matrix <- count_matrix[-c(1)]
 
 # Read in the sample sheet
-sampletable <- read_tsv('/Users/henry/Documents/GitHub/Final/pancrease_sample/sample.tsv')
+sampletable <- read_tsv('/Users/henry/Documents/GitHub/Final/DES_dataset/sample.tsv')
 
 row.names(sampletable) <- sampletable$case_submitter_id
 
 sampletable$alcohol_history <- as.factor(sampletable$alcohol_history)
+
+sampletable$gender <- as.factor(sampletable$gender)
 ```
 
 ```{r}
@@ -135,7 +181,7 @@ meanSdPlot(assay(rld))
 ```{r}
 select <- order(rowMeans(counts(DES_dataset,normalized=TRUE)),
                 decreasing=TRUE)[1:20]
-df <- as.data.frame(colData(DES_dataset)[,c("case_submitter_id", "alcohol_history")])
+df <- as.data.frame(colData(DES_dataset)[,c("case_submitter_id", "gender", "alcohol_history")])
 df$case_submitter_id <- as.factor(df$case_submitter_id)
 df <- df[-c(1)]
 ```
