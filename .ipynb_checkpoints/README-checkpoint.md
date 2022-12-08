@@ -25,7 +25,7 @@ A complete repository with clear formatted vigneette and the data about the rela
 ### Change File Names ###
 I changed all the filename of gene_counts.txt to match with the case_id in the sample.txt. So, after I process all of them and merge them into a matrix, the first row of matrix matches the first column of sample.txt.
 
-### Process gene_counts.tsv and Merge them into Matrix ###
+### Process gene_counts.tsv and Merge them into Matrix (Male and Female) ###
 Extract the column #4 which is unstranded counts of the sample
 
 ```{r}
@@ -62,11 +62,67 @@ Remove row #2 to #4 [Eun]
 awk '!/^N_*/' gene_id.txt > gene_id.tmp && mv gene_id.tmp gene_id.txt
 ```
 
-Merged counts
+Merged counts(male)
 
 ```{r}
 paste gene_id.txt TCGA-FB-AAQ0.txt TCGA-FB-AAPY.txt TCGA-3A-A9IU.txt TCGA-IB-7893.txt TCGA-HZ-7918.txt TCGA-FB-AAPQ.txt TCGA-IB-A6UF.txt TCGA-IB-7654.txt TCGA-F2-A8YN.txt TCGA-IB-7886.txt TCGA-IB-7646.txt TCGA-HZ-A49I.txt TCGA-3A-A9J0.txt TCGA-OE-A75W.txt TCGA-IB-A7LX.txt TCGA-XD-AAUL.txt TCGA-FB-AAPP.txt TCGA-FB-AAPZ.txt TCGA-IB-AAUP.txt TCGA-FB-AAQ1.txt TCGA-3E-AAAY.txt TCGA-IB-AAUR.txt TCGA-IB-A7M4.txt TCGA-S4-A8RM.txt TCGA-HZ-7925.txt TCGA-IB-A6UG.txt TCGA-IB-AAUM.txt TCGA-3A-A9I9.txt TCGA-IB-AAUU.txt TCGA-RB-AA9M.txt TCGA-YB-A89D.txt TCGA-IB-7647.txt TCGA-IB-AAUQ.txt TCGA-US-A77G.txt TCGA-HZ-A8P0.txt > Merged_Gene_Counts.txt
 ``` 
+
+Merged counts(male, without head)
+```{r}
+paste TCGA-FB-AAQ0.txt TCGA-FB-AAPY.txt TCGA-3A-A9IU.txt TCGA-IB-7893.txt TCGA-HZ-7918.txt TCGA-FB-AAPQ.txt TCGA-IB-A6UF.txt TCGA-IB-7654.txt TCGA-F2-A8YN.txt TCGA-IB-7886.txt TCGA-IB-7646.txt TCGA-HZ-A49I.txt TCGA-3A-A9J0.txt TCGA-OE-A75W.txt TCGA-IB-A7LX.txt TCGA-XD-AAUL.txt TCGA-FB-AAPP.txt TCGA-FB-AAPZ.txt TCGA-IB-AAUP.txt TCGA-FB-AAQ1.txt TCGA-3E-AAAY.txt TCGA-IB-AAUR.txt TCGA-IB-A7M4.txt TCGA-S4-A8RM.txt TCGA-HZ-7925.txt TCGA-IB-A6UG.txt TCGA-IB-AAUM.txt TCGA-3A-A9I9.txt TCGA-IB-AAUU.txt TCGA-RB-AA9M.txt TCGA-YB-A89D.txt TCGA-IB-7647.txt TCGA-IB-AAUQ.txt TCGA-US-A77G.txt TCGA-HZ-A8P0.txt > Merged_Gene_Counts_male.txt
+```
+
+Merged counts(female)
+```{r}
+paste gene_id.txt TCGA-IB-A5ST.txt TCGA-IB-7889.txt TCGA-FB-AAQ3.txt TCGA-IB-AAUO.txt TCGA-FB-AAPS.txt TCGA-HZ-7919.txt TCGA-IB-7885.txt TCGA-3A-A9IC.txt TCGA-IB-7651.txt TCGA-XD-AAUH.txt TCGA-XD-AAUI.txt TCGA-HZ-A77O.txt TCGA-US-A779.txt TCGA-LB-A9Q5.txt TCGA-IB-7887.txt TCGA-HZ-8317.txt TCGA-HZ-7922.txt TCGA-FB-AAQ2.txt TCGA-FB-A78T.txt TCGA-IB-A5SS.txt TCGA-HZ-A49H.txt TCGA-YY-A8LH.txt TCGA-S4-A8RO.txt TCGA-IB-7891.txt TCGA-3A-A9IB.txt > Merged_Gene_Counts_female.txt
+``` 
+
+Move Merged_Gene_Counts_male.txt and Merged_Gene_Counts_female.txt into a new folder DES_dataset
+
+### Process exposure.tsv and clinical.tsv, and Merge them into sample.tsv (Male and Female) ###
+Extract the case_submitter_id, the column 2, from exposure.tsv.
+
+```{r}
+awk '{print $2}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/sample1.txt
+```
+Extract the alcohol_history, the column 7, from exposure.tsv.
+
+```{r}
+awk '{print $7}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/exposure.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Female/sample2.txt
+```
+
+Extract the gender, the column 15, from clinical.tsv.
+
+```{r}
+awk '{print $15}' /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/clinical.tsv > /Users/henry/Documents/GitHub/Final/pancrease_sample_Male/sample3.tsv
+```
+
+Change column name of sample3.tsv to gender.
+
+```{r}
+sed -e '1s/race/gender/' -e '1s/race/gender/' sample3.tsv > sample4.tsv
+```
+
+Delete redundant lines of sample4.tsv
+
+```{r}
+sed '37,71d' sample4.tsv > sample5.tsv
+```
+
+Paste these files together to get the sample_male.tsv/sample_female.tsv
+
+```{r}
+paste sample1.tsv sample5.tsv sample2.tsv > sample.tsv
+```
+
+Delete the first column(head) of sample_male.tsv
+
+```{bash}
+tail -n +2 sample.tsv > sample.tmp && mv sample.tmp sample_male.tsv
+```
+
+Move sample_male.tsv and sample_female.tsv into the folder DES_dataset
 
 ### Check Packages in Your Rstudio library ###
 ```{r}
@@ -465,7 +521,6 @@ pheatmap(DistMatrix)
 ![Heatmap(DistMatrix).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/Heatmap(DistMatrix).png)
 
 ### Principal Component Analysis Plot ###
-
 ```{r}
 plotPCA(vsd, intgroup="alcohol_history")
 ```
