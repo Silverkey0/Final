@@ -36,9 +36,11 @@ Remove the first line of the file without printing [Eun]
 
 ```{r}
 tail -n +2 feec.txt > feec.tmp && mv feec.tmp feec.txt
+```
 
 Replace_header.sh to change the column of each .txt file to its file name [Eun]
 
+```{r}
 ./replace_header.sh
 ```
 
@@ -91,20 +93,24 @@ BiocManager::install("Package")
 
 ### Setting Working Directory and Wrangling the Raw Count Matrix and Sample Sheet ### [Eun]
 ```{r}
-count_matrix <- read.delim("/Users/henry/Documents/GitHub/Final/Gene_Counts_Merged/Merged_Gene_Counts.txt", header=T, sep="\t")
+setwd('/Users/henry/Documents/GitHub/Final')
+
+# Read in the matrix
+count_matrix <- read.delim("/Users/henry/Documents/GitHub/Final/DES_dataset/Merged_Gene_Counts.txt", header=T, sep="\t")
 
 # Change column #1 into row name and delete the column #1 after that
 row.names(count_matrix) <- count_matrix$gene_id
 count_matrix <- count_matrix[-c(1)]
 
 # Read in the sample sheet
-sampletable <- read_tsv('/Users/henry/Documents/GitHub/Final/pancrease_sample/sample.tsv')
+sampletable <- read_tsv('/Users/henry/Documents/GitHub/Final/DES_dataset/sample.tsv')
 
-# Change column #1 (sample_id) into row name
+# Change column #1 into row name
 row.names(sampletable) <- sampletable$case_submitter_id
 
-# Read in the sample sheet
 sampletable$alcohol_history <- as.factor(sampletable$alcohol_history)
+
+sampletable$gender <- as.factor(sampletable$gender)
 ```
 
 ### Create DESeq2 object ###
@@ -133,7 +139,7 @@ nrow(DES_dataset)
 ```
 
 ```{r}
-## [1] 38297
+## [1] 41102
 ```
 
 ### Performing standard differential expression analysis ###
@@ -175,34 +181,33 @@ result_table
 ```{r}
 ## log2 fold change (MLE): alcohol history Yes vs No 
 ## Wald test p-value: alcohol history Yes vs No 
-## DataFrame with 38297 rows and 6 columns
+## DataFrame with 41102 rows and 6 columns
 ##                     baseMean log2FoldChange     lfcSE
-##                    <numeric>      <numeric> <numeric>
-## ENSG00000000003.15  1847.940      0.3432972  0.223171
-## ENSG00000000005.6     17.548     -4.4119953  0.916820
-## ENSG00000000419.13  1520.797     -0.0576332  0.191393
-## ENSG00000000457.14   726.296     -0.0335386  0.172066
-## ENSG00000000460.17   225.542      0.2176643  0.185136
-## ...                      ...            ...       ...
-## ENSG00000288660.1    1.34019     0.41225385  0.761056
-## ENSG00000288663.1   23.81928     0.00502119  0.354229
-## ENSG00000288670.1  212.39178    -0.08557983  0.205988
-## ENSG00000288674.1    5.82581     0.19588790  0.406215
-## ENSG00000288675.1   28.09440     0.46080399  0.302039
-##                         stat      pvalue       padj
-##                    <numeric>   <numeric>  <numeric>
-## ENSG00000000003.15  1.538273 1.23982e-01 0.81971045
-## ENSG00000000005.6  -4.812280 1.49218e-06 0.00403182
-## ENSG00000000419.13 -0.301124 7.63320e-01 0.98175320
-## ENSG00000000457.14 -0.194917 8.45458e-01 0.98772154
-## ENSG00000000460.17  1.175701 2.39714e-01 0.89130663
-...                      ...         ...        ...
-## ENSG00000288660.1   0.541687    0.588034   0.963093
-## ENSG00000288663.1   0.014175    0.988690   0.999113
-## ENSG00000288670.1  -0.415460    0.677805   0.976402
-## ENSG00000288674.1   0.482227    0.629645   0.971329
-## ENSG00000288675.1   1.525642    0.127099   0.820672
-
+##                     <numeric>      <numeric> <numeric>
+## ENSG00000000003.15 1887.97781      0.0804583  0.142874
+## ENSG00000000005.6     8.38228     -2.6045422  0.657433
+## ENSG00000000419.13 1517.18200     -0.0159072  0.114282
+## ENSG00000000457.14  708.13087     -0.0784189  0.112094
+## ENSG00000000460.17  227.57440      0.1691936  0.123464
+## ...                       ...            ...       ...
+## ENSG00000288660.1     1.09663      0.9471235  0.606703
+## ENSG00000288663.1    22.66617      0.0804520  0.246530
+## ENSG00000288670.1   221.73127      0.0842019  0.137095
+## ENSG00000288674.1     5.39217      0.2671591  0.284744
+## ENSG00000288675.1    28.32291      0.3696539  0.193836
+##                         stat      pvalue      padj
+##                    <numeric>   <numeric> <numeric>
+## ENSG00000000003.15  0.563141 5.73339e-01 0.8932726
+## ENSG00000000005.6  -3.961684 7.44229e-05 0.0431611
+## ENSG00000000419.13 -0.139192 8.89298e-01 0.9802883
+## ENSG00000000457.14 -0.699584 4.84187e-01 0.8591191
+## ENSG00000000460.17  1.370383 1.70567e-01 0.6892353
+## ...                      ...         ...       ...
+## ENSG00000288660.1   1.561100    0.118500        NA
+## ENSG00000288663.1   0.326337    0.744169  0.948706
+## ENSG00000288670.1   0.614186    0.539093  0.878788
+## ENSG00000288674.1   0.938242    0.348120  0.799474
+## ENSG00000288675.1   1.907043    0.056515  0.558374
 ```
 
 ### Use “lfcShrink” to Shrink the Effect Size with apeglm Method ### [Eun]
@@ -224,33 +229,33 @@ resultLFC
 ```{r}
 ## log2 fold change (MAP): alcohol history Yes vs No 
 ## Wald test p-value: alcohol history Yes vs No 
-## DataFrame with 38297 rows and 5 columns
-##                     baseMean log2FoldChange      lfcSE
-##                    <numeric>      <numeric>  <numeric>
-## ENSG00000000003.15  1847.940   -9.66068e-06 0.00144268
-## ENSG00000000005.6     17.548   -5.45537e-06 0.00144270
-## ENSG00000000419.13  1520.797    3.21209e-05 0.00144283
-## ENSG00000000457.14   726.296   -2.78548e-06 0.00144264
-## ENSG00000000460.17   225.542   -4.81844e-07 0.00144265
-## ...                      ...            ...        ...
-## ENSG00000288660.1    1.34019    7.19334e-07 0.00144269
-## ENSG00000288663.1   23.81928    3.16623e-08 0.00144268
-## ENSG00000288670.1  212.39178   -7.45090e-06 0.00144267
-## ENSG00000288674.1    5.82581    1.22911e-06 0.00144269
-## ENSG00000288675.1   28.09440    2.50409e-06 0.00144268
-##                         pvalue       padj
-##                      <numeric>  <numeric>
-## ENSG00000000003.15 1.23982e-01 0.81971045
-## ENSG00000000005.6  1.49218e-06 0.00403182
-## ENSG00000000419.13 7.63320e-01 0.98175320
-## ENSG00000000457.14 8.45458e-01 0.98772154
-## ENSG00000000460.17 2.39714e-01 0.89130663
-## ...                        ...        ...
-## ENSG00000288660.1     0.588034   0.963093
-## ENSG00000288663.1     0.988690   0.999113
-## ENSG00000288670.1     0.677805   0.976402
-## ENSG00000288674.1     0.629645   0.971329
-## ENSG00000288675.1     0.127099   0.820672
+## DataFrame with 41102 rows and 5 columns
+##                      baseMean log2FoldChange      lfcSE
+##                     <numeric>      <numeric>  <numeric>
+## ENSG00000000003.15 1887.97781    2.94178e-04 0.00145817
+## ENSG00000000005.6     8.38228   -7.79633e-06 0.00144270
+## ENSG00000000419.13 1517.18200   -8.25095e-05 0.00144376
+## ENSG00000000457.14  708.13087   -6.52219e-06 0.00144258
+## ENSG00000000460.17  227.57440    1.35846e-05 0.00144263
+## ...                       ...            ...        ...
+## ENSG00000288660.1     1.09663    2.66383e-06 0.00144269
+## ENSG00000288663.1    22.66617    2.52994e-06 0.00144267
+## ENSG00000288670.1   221.73127   -4.76731e-05 0.00144301
+## ENSG00000288674.1     5.39217    3.92397e-06 0.00144268
+## ENSG00000288675.1    28.32291    9.94458e-06 0.00144267
+##                         pvalue      padj
+##                      <numeric> <numeric>
+## ENSG00000000003.15 5.73339e-01 0.8932726
+## ENSG00000000005.6  7.44229e-05 0.0431611
+## ENSG00000000419.13 8.89298e-01 0.9802883
+## ENSG00000000457.14 4.84187e-01 0.8591191
+## ENSG00000000460.17 1.70567e-01 0.6892353
+## ...                        ...       ...
+## ENSG00000288660.1     0.118500        NA
+## ENSG00000288663.1     0.744169  0.948706
+## ENSG00000288670.1     0.539093  0.878788
+## ENSG00000288674.1     0.348120  0.799474
+## ENSG00000288675.1     0.056515  0.558374
 ```
 
 ### Exploring and Exporting Results ###
@@ -275,13 +280,13 @@ summary(result05)
 ```
 
 ```{r}
-## out of 38283 with nonzero total read count
+## out of 41095 with nonzero total read count
 ## adjusted p-value < 0.05
-## LFC > 0 (up)       : 23, 0.06%
-## LFC < 0 (down)     : 11, 0.029%
+## LFC > 0 (up)       : 44, 0.11%
+## LFC < 0 (down)     : 18, 0.044%
 ## outliers [1]       : 0, 0%
-## low counts [2]     : 13374, 35%
-## (mean count < 4)
+## low counts [2]     : 11161, 27%
+## (mean count < 1)
 ## [1] see 'cooksCutoff' argument of ?results
 ## [2] see 'independentFiltering' argument of ?results
 ```
@@ -291,7 +296,7 @@ sum(result05$padj < 0.05, na.rm = TRUE)
 ```
 
 ```{r}
-## [1] 34
+## [1] 62
 ```
 
 #### Use “plotCounts" to Make a Plot for the Read Counts of Single Gene Across the Groups ####
@@ -317,54 +322,86 @@ head(assay(vsd), 3)
 ```
 
 ```{r}
-## TCGA.FB.AAQ0 TCGA.FB.AAPY TCGA.3A.A9IU
-## ENSG00000000003.15    10.319431     10.46900    11.681672
-## ENSG00000000005.6      2.488669      3.51606     3.061314
-## ENSG00000000419.13    10.694605      9.85416    10.514349
-##                    TCGA.IB.7893 TCGA.HZ.7918 TCGA.FB.AAPQ
-## ENSG00000000003.15    11.117784    11.473718    10.152505
-## ENSG00000000005.6      2.488669     2.488669     2.488669
-## ENSG00000000419.13    10.698456    11.018299    10.921165
-##                    TCGA.IB.A6UF TCGA.IB.7654 TCGA.F2.A8YN
-## ENSG00000000003.15    11.171759    10.208675    11.635816
-## ENSG00000000005.6      2.488669     5.038297     2.488669
-## ENSG00000000419.13    11.562186    10.190192    10.488326
-                   TCGA.IB.7886 TCGA.IB.7646 TCGA.HZ.A49I
-## ENSG00000000003.15    11.583447    11.977760    10.165152
-## ENSG00000000005.6      3.023692     2.488669     3.559424
-## ENSG00000000419.13    10.947554    11.474217    10.374246
-##                    TCGA.3A.A9J0 TCGA.OE.A75W TCGA.IB.A7LX
-## ENSG00000000003.15     9.663161    10.540009    11.528823
-## ENSG00000000005.6      6.791195     3.539016     2.488669
-## ENSG00000000419.13    10.721324    10.443468    10.590175
-##                    TCGA.XD.AAUL TCGA.FB.AAPP TCGA.FB.AAPZ
-## ENSG00000000003.15    10.504364    10.952590    11.027196
-## ENSG00000000005.6      3.356005     3.570885     6.433774
-## ENSG00000000419.13    10.460089    11.187699    10.788415
-##                    TCGA.IB.AAUP TCGA.FB.AAQ1 TCGA.3E.AAAY
-## ENSG00000000003.15    10.044796    10.983121    10.689385
-## ENSG00000000005.6      3.548781     2.488669     4.106236
-## ENSG00000000419.13    10.115541    10.438022    10.354839
-##                    TCGA.IB.AAUR TCGA.IB.A7M4 TCGA.S4.A8RM
-## ENSG00000000003.15    10.079768    11.089879    10.251064
-## ENSG00000000005.6      3.982598     2.488669     3.414931
-## ENSG00000000419.13    10.076477    11.331012    10.273562
-##                    TCGA.HZ.7925 TCGA.IB.A6UG TCGA.IB.AAUM
-## ENSG00000000003.15     10.47531    11.421067    10.895244
-## ENSG00000000005.6       3.33652     2.488669     4.074597
-## ENSG00000000419.13     10.50466    10.192412    10.115033
-##                    TCGA.3A.A9I9 TCGA.IB.AAUU TCGA.RB.AA9M
-## ENSG00000000003.15    10.828242    10.182738    11.276271
-## ENSG00000000005.6      4.415881     2.488669     3.796845
-## ENSG00000000419.13    10.502043    10.387122    10.237731
-##                    TCGA.YB.A89D TCGA.IB.7647 TCGA.IB.AAUQ
-## ENSG00000000003.15    10.712182     9.900150    10.316825
-## ENSG00000000005.6      8.481342     3.114056     3.758927
-## ENSG00000000419.13    10.339602    10.517144    10.155995
-##                    TCGA.US.A77G TCGA.HZ.A8P0
-## ENSG00000000003.15    10.119572    10.474424
-## ENSG00000000005.6      3.305171     2.488669
-## ENSG00000000419.13    10.241197     8.815162 
+##                    TCGA.IB.A5ST TCGA.IB.7889 TCGA.FB.AAQ3
+## ENSG00000000003.15    10.600048    11.308229    11.501187
+## ENSG00000000005.6      6.664012     3.594849     4.209485
+## ENSG00000000419.13    10.394696    10.640558    10.983005
+##                    TCGA.IB.AAUO TCGA.FB.AAPS TCGA.HZ.7919
+## ENSG00000000003.15    10.097235    10.559839    10.520871
+## ENSG00000000005.6      2.707905     6.345453     2.707905
+## ENSG00000000419.13    10.491123    10.142043    10.627850
+##                    TCGA.IB.7885 TCGA.3A.A9IC TCGA.IB.7651
+## ENSG00000000003.15    10.703114    10.618378    10.596153
+## ENSG00000000005.6      4.722643     2.707905     3.137335
+## ENSG00000000419.13    10.342351    10.182673    10.224360
+##                    TCGA.XD.AAUH TCGA.XD.AAUI TCGA.HZ.A77O
+## ENSG00000000003.15    10.315429    10.893892    10.890884
+## ENSG00000000005.6      4.611004     3.260566     3.318963
+## ENSG00000000419.13    10.130414    10.488733    10.732432
+##                    TCGA.US.A779 TCGA.LB.A9Q5 TCGA.IB.7887
+## ENSG00000000003.15    10.735429    11.173607    10.893195
+## ENSG00000000005.6      2.707905     3.479841     2.707905
+## ENSG00000000419.13    10.275133    10.559516    10.696392
+##                    TCGA.HZ.8317 TCGA.HZ.7922 TCGA.FB.AAQ2
+## ENSG00000000003.15    11.257950    11.533112    11.163157
+## ENSG00000000005.6      4.101546     3.246727     3.792674
+## ENSG00000000419.13    10.768382    10.898406    10.863802
+##                    TCGA.FB.A78T TCGA.IB.A5SS TCGA.HZ.A49H
+## ENSG00000000003.15    10.285506    11.248745    10.975332
+## ENSG00000000005.6      3.213246     3.236189     4.464828
+## ENSG00000000419.13    10.079566    10.183576    10.625458
+##                    TCGA.YY.A8LH TCGA.S4.A8RO TCGA.IB.7891
+## ENSG00000000003.15    10.771852     9.967486    11.074258
+## ENSG00000000005.6      2.707905     2.707905     3.451118
+## ENSG00000000419.13    10.482645    11.067733    10.436659
+##                    TCGA.3A.A9IB TCGA.FB.AAQ0 TCGA.FB.AAPY
+## ENSG00000000003.15    11.239867    10.360883    10.510575
+## ENSG00000000005.6      3.432783     2.707905     3.675724
+## ENSG00000000419.13    10.324485    10.735677     9.896529
+##                    TCGA.3A.A9IU TCGA.IB.7893 TCGA.HZ.7918
+## ENSG00000000003.15    11.718699    11.132901    11.503508
+## ENSG00000000005.6      3.245796     2.707905     2.707905
+## ENSG00000000419.13    10.552200    10.713945    11.048385
+##                    TCGA.FB.AAPQ TCGA.IB.A6UF TCGA.IB.7654
+## ENSG00000000003.15    10.191084    11.202248    10.240826
+## ENSG00000000005.6      2.707905     2.707905     5.125891
+## ENSG00000000419.13    10.958960    11.592442    10.222368
+##                    TCGA.F2.A8YN TCGA.IB.7886 TCGA.IB.7646
+## ENSG00000000003.15    11.666558    11.613194    12.000182
+## ENSG00000000005.6      2.707905     3.209143     2.707905
+## ENSG00000000419.13    10.519929    10.977711    11.496885
+##                    TCGA.HZ.A49I TCGA.3A.A9J0 TCGA.OE.A75W
+## ENSG00000000003.15    10.201092     9.694395    10.572147
+## ENSG00000000005.6      3.714737     6.839115     3.694336
+## ENSG00000000419.13    10.409929    10.751108    10.475710
+##                    TCGA.IB.A7LX TCGA.XD.AAUL TCGA.FB.AAPP
+## ENSG00000000003.15    11.568193    10.532636    10.963881
+## ENSG00000000005.6      2.707905     3.520731     3.717468
+## ENSG00000000419.13    10.630210    10.488411    11.198800
+##                    TCGA.FB.AAPZ TCGA.IB.AAUP TCGA.FB.AAQ1
+## ENSG00000000003.15    11.062667    10.080222    11.012250
+## ENSG00000000005.6      6.491947     3.704451     2.707905
+## ENSG00000000419.13    10.824076    10.150868    10.467668
+##                    TCGA.3E.AAAY TCGA.IB.AAUR TCGA.IB.A7M4
+## ENSG00000000003.15    10.725913    10.118494    11.106114
+## ENSG00000000005.6      4.234104     4.117073     2.707905
+## ENSG00000000419.13    10.391711    10.115208    11.347074
+##                    TCGA.S4.A8RM TCGA.HZ.7925 TCGA.IB.A6UG
+## ENSG00000000003.15    10.299225    10.504500    11.455591
+## ENSG00000000005.6      3.581969     3.502649     2.707905
+## ENSG00000000419.13    10.321697    10.533819    10.228016
+##                    TCGA.IB.AAUM TCGA.3A.A9I9 TCGA.IB.AAUU
+## ENSG00000000003.15    10.934569    10.865270    10.216059
+## ENSG00000000005.6      4.205384     4.530319     2.707905
+## ENSG00000000419.13    10.155166    10.539375    10.420189
+##                    TCGA.RB.AA9M TCGA.YB.A89D TCGA.IB.7647
+## ENSG00000000003.15    11.300528    10.738449     9.929323
+## ENSG00000000005.6      3.935167     8.512636     3.293500
+## ENSG00000000419.13    10.262981    10.366276    10.545484
+##                    TCGA.IB.AAUQ TCGA.US.A77G TCGA.HZ.A8P0
+## ENSG00000000003.15    10.350067    10.154877    10.515422
+## ENSG00000000005.6      3.902537     3.474657     2.707905
+## ENSG00000000419.13    10.189443    10.276342     8.859356
 ```
 
 #### Effects of Transformations on the Variance ####
@@ -393,7 +430,7 @@ meanSdPlot(assay(rld))
 ```{r}
 select <- order(rowMeans(counts(DES_dataset,normalized=TRUE)),
                 decreasing=TRUE)[1:20]
-df <- as.data.frame(colData(DES_dataset)[,c("case_submitter_id", "alcohol_history")])
+df <- as.data.frame(colData(DES_dataset)[,c("case_submitter_id", "gender", "alcohol_history")])
 df$case_submitter_id <- as.factor(df$case_submitter_id)
 df <- df[-c(1)]
 ```
@@ -418,6 +455,7 @@ pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, cluster_c
 ![Heatmap(rld).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/Heatmap(rld).png)
 
 Sample-to-Sample distances
+
 ```{r}
 sampleDists <- dist(t(assay(vsd)))
 DistMatrix <- as.matrix(sampleDists)
@@ -425,3 +463,11 @@ pheatmap(DistMatrix)
 ```
 
 ![Heatmap(DistMatrix).png](https://github.com/Silverkey0/Final/blob/main/Vigentte/Heatmap(DistMatrix).png)
+
+### Principal Component Analysis Plot ###
+
+```{r}
+plotPCA(vsd, intgroup="alcohol_history")
+```
+
+![principal_analysis.png](https://github.com/Silverkey0/Final/blob/main/Vigentte/principal_analysis.png.png)
